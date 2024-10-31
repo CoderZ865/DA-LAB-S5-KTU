@@ -1,8 +1,14 @@
 """
 Write a python program to find the dissimilarity of nominal, numeric and mixed attribute types
+
+
+
+
+
+
 """
 
-import math, csv
+import math, csv, pandas as pd
 
 
 def minkowski_distance(A, B, p):
@@ -35,6 +41,20 @@ def print_matrix(Type, matrix):
         print()
     print('........'*len(matrix))
     print()
+
+
+def select_attribute(Name, df, attribute_type):
+    selected_attribute = None
+    valid_attributes = df.select_dtypes(include=[attribute_type]).columns.tolist()
+    
+    while selected_attribute not in valid_attributes:
+        selected_attribute = input(f"Select a {attribute_type} attribute to store into {Name}: ")
+        if selected_attribute not in valid_attributes:
+            print("Invalid selection. Please choose a valid attribute name from the following options:")
+            print(valid_attributes)
+
+    print(f"You selected: {selected_attribute} for {Name}")
+    return df[selected_attribute]
 
 
 def nominal_dissimilarity_matrix(attribute, matrix):
@@ -104,17 +124,30 @@ def main():
     # numeric_data = input("Enter numeric attributes (comma-separated): ").split(',')
     # numeric_data = [float(item.strip()) for item in numeric_data]  # Convert to float and strip spaces
 
-    with open("Ex05\Ex05data.csv", 'r') as datfile:
-        reader = csv.reader(datfile)
+    # with open("Ex05\Ex05data.csv", 'r') as datfile:
+    #     reader = csv.reader(datfile)
 
-        nominal_data = []
-        numeric_data = []
+    #     nominal_data = []
+    #     numeric_data = []
 
-        for row in reader:
-            nominal_data.append(row[0])
-            numeric_data.append(int(row[1]))
+    #     for row in reader:
+    #         nominal_data.append(row[0])
+    #         numeric_data.append(int(row[1]))
 
-    print(f'Nominal Data: {nominal_data}\nNumeric Data: {numeric_data}')
+    # print(f'Nominal Data: {nominal_data}\nNumeric Data: {numeric_data}')
+
+    file_path="Ex05\Ex05data.csv"
+    df = pd.read_csv(file_path)
+
+    nominal_attributes = df.select_dtypes(include=['object']).columns.tolist()
+    numeric_attributes = df.select_dtypes(include=['number']).columns.tolist()
+
+    print("Attributes found:")
+    print(f"Nominal Attributes: {nominal_attributes}")
+    print(f"Numeric Attributes: {numeric_attributes}")
+
+    nominal_data = select_attribute("nominal_data",df, "object")
+    numeric_data = select_attribute("numeric_data",df, "number")
 
     nominal_matrix = []
     numeric_matrix = []
