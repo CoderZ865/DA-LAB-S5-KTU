@@ -1,10 +1,51 @@
 """
 Write a python program to find the dissimilarity of nominal, numeric and mixed attribute types
 
+summary of all the variables and functions present in the provided Python program for calculating the dissimilarity of nominal, numeric, and mixed attribute types.
 
+Variables
+- file_path: Stores the path to the CSV file containing the data (e.g., "Ex05\Ex05data.csv").
+- df: A DataFrame created by reading the CSV file using pd.read_csv(). This contains all the data loaded from the CSV.
+- nominal_attributes: A list of the names of nominal attributes (columns) in the DataFrame, identified using df.select_dtypes(include=['object']).
+- numeric_attributes: A list of the names of numeric attributes (columns) in the DataFrame, identified using df.select_dtypes(include=['number']).
+- nominal_data: A Series containing the data for the selected nominal attribute, returned by the select_attribute() function.
+- numeric_data: A Series containing the data for the selected numeric attribute, returned by the select_attribute() function.
+- nominal_matrix: A list that will hold the dissimilarity matrix for the nominal data, populated by the nominal_dissimilarity_matrix() function.
+- numeric_matrix: A list that will hold the dissimilarity matrix for the numeric data, populated by the numeric_dissimilarity_matrix() function.
+- metrics: An integer representing the selected distance metric (1 for Manhattan, 2 for Euclidean, 3 for an intermediate distance). This is determined through user input.
+- p: A float representing the parameter for the Minkowski distance, set to 1.5 if the user selects the intermediate metric; otherwise, it is set to the selected metric (1 or 2).
 
+Functions
+- minkowski_distance(A, B, p):
+Computes the Minkowski distance between two numerical values or lists of values based on the specified parameter p.
 
+- normalize(attribute):
+Normalizes a list of numeric values to the range [0, 1] using min-max normalization.
 
+- print_matrix(Type, matrix):
+Prints the dissimilarity matrix in a formatted manner, labeled with the specified type (e.g., nominal, numeric, mixed).
+
+- select_attribute(Name, df, attribute_type):
+Prompts the user to select an attribute of the specified type (nominal or numeric) from the DataFrame. Returns the corresponding data as a Series.
+
+- nominal_dissimilarity_matrix(attribute, matrix):
+Computes the dissimilarity matrix for nominal attributes, where each unique value has a distance of 0 to itself and 1 to all other values.
+
+- numeric_dissimilarity_matrix(attribute, matrix, p):
+Computes the dissimilarity matrix for numeric attributes using the Minkowski distance based on the selected parameter p.
+
+- mixed_dissimilarity_matrix(*matrices):
+Combines multiple dissimilarity matrices (nominal and numeric) by summing the corresponding elements and averaging them, resulting in a single mixed dissimilarity matrix.
+
+- main():
+The main function that orchestrates the flow of the program. It reads the CSV file, identifies nominal and numeric attributes, selects them based on user input, calculates dissimilarity matrices for both types, and computes the mixed dissimilarity matrix.
+
+Program Flow
+The program starts by reading data from a CSV file into a DataFrame.
+It identifies nominal and numeric attributes, prompting the user to select one from each category.
+It computes the dissimilarity matrices for the selected attributes and prints them in a structured format.
+Finally, it combines the matrices to present a mixed dissimilarity matrix.
+This organization allows for efficient handling of both nominal and numeric data and provides a clear and modular approach to calculating dissimilarities.
 
 """
 
