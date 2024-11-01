@@ -87,6 +87,8 @@ def print_matrix(Type, matrix):
 def select_attribute(Name, df, attribute_type):
     selected_attribute = None
     valid_attributes = df.select_dtypes(include=[attribute_type]).columns.tolist()
+
+    attribute_type = "nominal" if attribute_type=="object" else "numeric"
     
     while selected_attribute not in valid_attributes:
         selected_attribute = input(f"Select a {attribute_type} attribute to store into {Name}: ")
