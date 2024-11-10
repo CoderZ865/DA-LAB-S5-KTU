@@ -163,5 +163,74 @@ if __name__ == "__main__":
     print(f"\nPredicted class: {prediction} (Target class: {target_class})")
 
 '''
+Sure! Here's a summarized explanation of each function in the provided code:
 
+ 1. `entropy(data)`
+   - Purpose: Calculates the entropy of the dataset (a measure of uncertainty or impurity).
+   - Input: `data` (a DataFrame of examples with features and target class).
+   - Output: The entropy value, a float representing the level of uncertainty (higher entropy means more uncertainty).
+   - Process: Counts the distribution of classes in the target column and computes the entropy using the formula:  
+     \[
+     \text{Entropy} = - \sum_{i=1}^{n} p_i \log_2 p_i
+     \]
+     where \(p_i\) is the probability of class \(i\).
+
+ 2. `information_gain(data, attribute)`
+   - Purpose: Calculates the information gain from splitting the dataset by a given attribute (used for decision tree construction).
+   - Input: `data` (the dataset) and `attribute` (a feature/column in the dataset).
+   - Output: The information gain value, a float, representing how much uncertainty is reduced by splitting on the attribute.
+   - Process:  
+     - Calculates the total entropy of the dataset.
+     - Splits the dataset based on the attribute’s unique values, calculates the weighted entropy for each subset, and computes the information gain as the difference between the total entropy and the weighted entropy.
+
+ 3. `best_attribute(data)`
+   - Purpose: Determines the best attribute to split the data on by maximizing information gain.
+   - Input: `data` (the dataset).
+   - Output: The name of the attribute (column) that provides the highest information gain.
+   - Process:  
+     - Loops over each attribute (excluding the target class) and calculates its information gain using the `information_gain` function.
+     - Returns the attribute with the highest gain.
+
+ 4. `build_tree(data)`
+   - Purpose: Recursively builds a decision tree based on the dataset.
+   - Input: `data` (the dataset).
+   - Output: A dictionary representing the decision tree, where each node is either an attribute (for splitting) or a leaf (with the class label).
+   - Process:  
+     - Checks stopping conditions (if the data is empty, all examples are of the same class, or no attributes are left to split on).
+     - Finds the best attribute to split on using `best_attribute`.
+     - Recursively splits the data and creates a tree, where each branch represents a split by a feature.
+
+ 5. `print_tree(tree, level=0)`
+   - Purpose: Prints the decision tree in a readable, hierarchical format.
+   - Input: `tree` (a dictionary representing the decision tree), `level` (indentation level, default is 0).
+   - Output: None (prints the tree structure to the console).
+   - Process:  
+     - Recursively prints the tree, indenting child nodes according to their depth in the tree.
+     - If the node is a leaf, it prints the class label; if it’s an attribute node, it prints the attribute and its possible values.
+
+ 6. `predict(tree, record, level=0)`
+   - Purpose: Makes a prediction for a given record by traversing the decision tree.
+   - Input: `tree` (the decision tree), `record` (a dictionary representing the input features of a single example), and `level` (indentation level for printing the decision path).
+   - Output: The predicted class label.
+   - Process:  
+     - Recursively traverses the tree based on the values in `record`.
+     - At each node, checks the value of the attribute in the record and follows the corresponding branch until a leaf is reached, which gives the predicted class.
+
+ 7. `load_data_and_create_tree(csv_file)`
+   - Purpose: Loads a dataset from a CSV file, allows the user to select the target class column, builds a decision tree, and returns the tree and relevant data.
+   - Input: `csv_file` (the path to the CSV file).
+   - Output: The decision tree, the target class, and the cleaned dataset.
+   - Process:  
+     - Loads the dataset using `pd.read_csv`.
+     - Prompts the user to select the target class column.
+     - Reorders columns so the target class is last.
+     - Removes any columns that have unique values (such as `rid`), as they don't provide useful information for the decision tree.
+     - Builds and returns the decision tree using `build_tree`.
+
+ Key Concepts:
+- Entropy: A measure of the unpredictability or impurity in a dataset.
+- Information Gain: The reduction in entropy (uncertainty) after splitting the data based on an attribute.
+- Decision Tree: A tree structure where each internal node represents a decision based on an attribute, and each leaf node represents a class label.
+
+These functions together implement the core logic of building a decision tree for classification using the ID3 algorithm. The decision tree splits the data based on attributes that maximize information gain, recursively creating a tree structure to classify new examples.
 '''
